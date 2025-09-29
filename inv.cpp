@@ -4,17 +4,28 @@
 #include <utility>
 #include <ios>
 #include <filesystem>
-void addfile (std::ifstream file,std::filesystem::path dir, std::unordered_map <std::string, std::pair<std::filesystem::path,int>> &hash){
+#include <vector>
+
+void add (std::ifstream file,std::filesystem::path &dir, std::unordered_map <std::string, std::vector<std::pair <std::filesystem::path,int>>> &hash){
     std::string word;
     file.open(dir,std::ios::in);
 
     while(file >> word){
-
-        if(hash.find(word) == hash.end()){ //if word unexists we create it
-            hash[word] = {dir.filename(),0};}
-
-        else{hash.at(word).second++;} // else increment the counter
-
-    }
-    file.close();
+    if(hash.find(word) != hash.end()){hash.at(word).back().second++; continue;}
+                hash[word].push_back({dir.filename(),1});
 }
+    file.close();
+
+}
+
+
+
+
+void search (std::string &word,std::unordered_map <std::string, std::vector<std::pair <std::filesystem::path,int>>> &hash){
+    
+    for(auto &s: hash.at(word)){
+        std::cout<<"{"<<s.first<<","<<s.second<<"}  ";
+    }
+}
+
+
