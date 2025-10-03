@@ -11,7 +11,7 @@ void add (std::ifstream &file,std::filesystem::path &dir, std::unordered_map <st
 
     while(file >> word){ bool z=1;
         if(hash.find(word) != hash.end()){
-            for(auto &k: hash.find(word)){
+            for(auto &k: hash.at(word)){
                 if(!k.first.filename().string().compare(dir.filename().string())) {k.second++;z=0; break;} //if pair is found increment counter and move on
 
 
@@ -50,14 +50,16 @@ for(auto &k:hash){
 
 int main(){  std::unordered_map <std::string, std::vector<std::pair <std::filesystem::path,int>>> hash;
  std::string s;std::ifstream file;std::filesystem::path p;
-
+        int x;
+        std::cout<<"Press any key to start\n";
     while(true){
-  
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
         std::cout<<"Choose:\n1.Add file\n2.Search word\n3.Delete file\n4.Exit\n";
 
-        int x;
         std::cin>>x;
-
+        if (x<1 || x>4 || std::cin.fail()){ std::cout<<"Command unrecognized \n";continue;}
         switch(x){
             case 1: 
                 std::cout<<"Enter directory (or 0 to return):";
@@ -83,11 +85,12 @@ int main(){  std::unordered_map <std::string, std::vector<std::pair <std::filesy
 
             break;
         
-            case 4:return 0; break;
-            default:std::cout<<"Unrecorgnized command \n";continue;
+            case 4:return 0;
+
 
 
         }
+
 
 
     }
